@@ -56,14 +56,15 @@ function showMenu(selectedTask) {
 
 function updateStatus(selectedTask) {
     let taskName = selectedTask.parentElement.lastElementChild;
-    if(selectedTask.checked) {
+    if (selectedTask.checked) {
         taskName.classList.add("checked");
         todos[selectedTask.id].status = "completed";
     } else {
         taskName.classList.remove("checked");
         todos[selectedTask.id].status = "pending";
     }
-    localStorage.setItem("todo-list", JSON.stringify(todos))
+    localStorage.setItem("todo-list", JSON.stringify(todos));
+    showTodo(document.querySelector("span.active").id); // Refresh the list
 }
 
 function editTask(taskId, textName) {
@@ -82,10 +83,12 @@ function deleteTask(deleteId, filter) {
 }
 
 clearAll.addEventListener("click", () => {
-    isEditTask = false;
-    todos.splice(0, todos.length);
-    localStorage.setItem("todo-list", JSON.stringify(todos));
-    showTodo()
+    if (confirm("Are you sure you want to clear all tasks?")) {
+        isEditTask = false;
+        todos.splice(0, todos.length);
+        localStorage.setItem("todo-list", JSON.stringify(todos));
+        showTodo();
+    }
 });
 
 taskInput.addEventListener("keyup", e => {
